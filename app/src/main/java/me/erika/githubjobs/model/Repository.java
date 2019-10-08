@@ -2,6 +2,8 @@ package me.erika.githubjobs.model;
 
 import android.util.Log;
 
+import java.util.List;
+
 import me.erika.githubjobs.network.GitHubJobsApi;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,19 +24,20 @@ public class Repository {
 
         GitHubJobsApi service = retro.create(GitHubJobsApi.class);
 
-        final Call<GitHubJobsDO> request = service.jobs(page);
+        final Call<List<GitHubJobsDO>> request = service.jobs(page);
 
-        request.enqueue(new Callback<GitHubJobsDO>() {
+        request.enqueue(new Callback<List<GitHubJobsDO>>() {
             @Override
-            public void onResponse(Call<GitHubJobsDO> call, Response<GitHubJobsDO> response) {
+            public void onResponse(Call<List<GitHubJobsDO>> call, Response<List<GitHubJobsDO>> response) {
                 mCallback.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<GitHubJobsDO> call, Throwable t) {
+            public void onFailure(Call<List<GitHubJobsDO>> call, Throwable t) {
                 Log.e("Erika", t.getMessage());
             }
         });
+
     }
 
     public void setCallbacks(Callbacks callback){
@@ -42,7 +45,7 @@ public class Repository {
     }
 
     public interface Callbacks{
-        void onResponse(GitHubJobsDO response);
+        void onResponse(List<GitHubJobsDO> response);
         void onFailure(String message);
     }
 }
